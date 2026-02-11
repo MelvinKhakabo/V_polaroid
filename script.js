@@ -1,6 +1,6 @@
 // =====================================
 // OUR JOURNEY · VALENTINE 2026
-// Linear Story Path · Empty Frame Proposal
+// BLANK FRAME · SPEECH BUBBLE · HEART POPUP
 // =====================================
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -11,8 +11,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const recordPlayer = document.getElementById('recordPlayer');
     const audio = document.getElementById('loverGirl');
     const progressCount = document.getElementById('progressCount');
-    const emptyFrameImage = document.getElementById('emptyFrameImage');
-    const emptyCaption = document.getElementById('emptyCaption');
+    const heartPopup = document.getElementById('heartPopup');
+    const yesButton = document.getElementById('yesButton');
+    const celebrationMessage = document.getElementById('celebrationMessage');
     
     // ---------- STATE ----------
     let visitedCount = 0;
@@ -21,33 +22,28 @@ document.addEventListener('DOMContentLoaded', function() {
     let proposalShown = false;
     let currentVideo = null;
     
-    // ---------- HELPER FUNCTIONS ----------
+    // ---------- UPDATE PROGRESS ----------
     function updateProgress() {
         if (progressCount) {
             progressCount.textContent = visitedCount;
         }
         
-        // Check if all chapters visited
+        // Check if all 15 chapters are visited
         if (visitedCount >= totalChapters) {
-            // Unlock empty frame
+            // UNLOCK THE EMPTY FRAME
             emptyChapter.setAttribute('data-unlocked', 'true');
             
-            // Update empty frame appearance
+            // Update caption text
             const captionText = emptyChapter.querySelector('.empty-caption-text');
             if (captionText) {
-                captionText.textContent = 'Ready for you';
+                captionText.textContent = 'Ready';
             }
             
-            // Remove locked class
-            const emptyPolaroid = emptyChapter.querySelector('.empty-polaroid');
-            if (emptyPolaroid) {
-                emptyPolaroid.classList.remove('locked');
-            }
-            
-            console.log('🎉 All 15 memories visited. Empty frame unlocked!');
+            console.log('✅ ALL 15 MEMORIES VISITED - EMPTY FRAME UNLOCKED');
         }
     }
     
+    // ---------- FADE OUT MUSIC ----------
     function fadeOutMusic() {
         if (!audio) return;
         
@@ -85,22 +81,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // If already visited, just toggle active state
+        // If already visited, just toggle
         if (visited) {
             chapter.classList.toggle('active');
             return;
         }
         
-        // ---------- FIRST TIME VISITING THIS CHAPTER ----------
+        // ---------- FIRST TIME VISIT ----------
         chapter.setAttribute('data-visited', 'true');
         chapter.classList.add('visited');
-        chapter.classList.add('active');
         
         // Increment counter
         visitedCount++;
-        console.log(`📍 Chapter ${chapterId} visited. Progress: ${visitedCount}/${totalChapters}`);
+        console.log(`📍 Chapter ${chapterId} visited - ${visitedCount}/${totalChapters}`);
         
-        // Animate the pin
+        // Animate pin
         const pinDot = chapter.querySelector('.pin-dot');
         pinDot.style.transform = 'scale(1.4)';
         setTimeout(() => {
@@ -110,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update progress display
         updateProgress();
         
-        // Auto-scroll to next chapter smoothly
+        // Auto-scroll to next chapter
         const nextChapter = chapter.nextElementSibling;
         if (nextChapter) {
             setTimeout(() => {
@@ -123,22 +118,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // ---------- EMPTY FRAME CLICK - PROPOSAL INSIDE FRAME ----------
+    // ---------- EMPTY FRAME CLICK HANDLER - SIMPLIFIED ----------
     function handleEmptyFrameClick(e) {
+        // Check if frame is unlocked
         const isUnlocked = emptyChapter.getAttribute('data-unlocked') === 'true';
         
         if (!isUnlocked) {
-            // Locked - gentle shake
+            // Locked - shake and log
             emptyChapter.classList.add('shake');
             setTimeout(() => emptyChapter.classList.remove('shake'), 500);
-            console.log('🔒 Not yet. Keep visiting your memories.');
+            console.log('🔒 Empty frame locked - keep visiting memories');
             return;
         }
         
-        if (proposalShown) return;
-        proposalShown = true;
+        // Unlocked - show the heart popup!
+        console.log('❤️ EMPTY FRAME CLICKED - SHOWING PROPOSAL');
         
-        // Fade out Lover Girl
+        // Fade out music if playing
         if (isMusicPlaying) {
             fadeOutMusic();
         }
@@ -148,107 +144,43 @@ document.addEventListener('DOMContentLoaded', function() {
             currentVideo.pause();
         }
         
-        // ---------- TRANSFORM EMPTY FRAME INTO PROPOSAL ----------
-        const emptyImage = document.getElementById('emptyFrameImage');
-        const captionEl = document.getElementById('emptyCaption');
-        
-        // Clear existing content
-        emptyImage.innerHTML = '';
-        captionEl.innerHTML = '';
-        
-        // Add proposal class
-        emptyImage.classList.add('proposal-mode');
-        
-        // Style and set proposal content
-        emptyImage.style.backgroundColor = '#FFF9F9';
-        emptyImage.style.display = 'flex';
-        emptyImage.style.flexDirection = 'column';
-        emptyImage.style.alignItems = 'center';
-        emptyImage.style.justifyContent = 'center';
-        emptyImage.style.padding = '24px 20px';
-        emptyImage.style.height = 'auto';
-        emptyImage.style.minHeight = '200px';
-        
-        // Add proposal text with staggered animation
-        emptyImage.innerHTML = `
-            <p style="font-family: 'DM Serif Display', serif; font-size: 1rem; color: #4A4A4A; margin-bottom: 8px; text-align: center; opacity: 0; animation: fadeInUp 0.5s ease forwards 0.2s;">
-                You've placed us on the map. Fifteen times.
-            </p>
-            <p style="font-family: 'DM Serif Display', serif; font-size: 1rem; color: #4A4A4A; margin-bottom: 8px; text-align: center; opacity: 0; animation: fadeInUp 0.5s ease forwards 0.5s;">
-                This one is still blank.
-            </p>
-            <p style="font-family: 'DM Serif Display', serif; font-size: 1rem; color: #4A4A4A; margin-bottom: 16px; text-align: center; opacity: 0; animation: fadeInUp 0.5s ease forwards 0.8s;">
-                I only know I want you in the frame.
-            </p>
-            <h2 style="font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: #E9748D; margin-bottom: 20px; text-align: center; opacity: 0; animation: fadeInUp 0.6s ease forwards 1.1s;">
-                Will you be my Valentine?
-            </h2>
-        `;
-        
-        // Create heart button
-        const heartButton = document.createElement('div');
-        heartButton.className = 'heart-response';
-        heartButton.style.opacity = '0';
-        heartButton.style.animation = 'fadeInUp 0.6s ease forwards 1.5s';
-        heartButton.innerHTML = `
-            <div class="heart-icon"></div>
-            <span class="heart-text">Yes, always</span>
-        `;
-        emptyImage.appendChild(heartButton);
-        
-        // Update caption
-        captionEl.innerHTML = '<p style="text-align: center; font-style: italic; color: #D14B6E; font-size: 0.8rem; letter-spacing: 2px;">February 14, 2026</p>';
-        
-        // Add click handler to heart
-        heartButton.addEventListener('click', handleHeartClick);
-        
-        console.log('❤️❤️❤️ Proposal revealed!');
+        // SHOW THE HEART POPUP
+        heartPopup.classList.add('visible');
+        proposalShown = true;
     }
     
-    // ---------- HEART CLICK - SHE SAID YES ----------
-    function handleHeartClick(e) {
+    // ---------- YES BUTTON CLICK HANDLER ----------
+    function handleYesClick(e) {
         e.stopPropagation();
+        console.log('💖 YES BUTTON CLICKED - SHE SAID YES!');
         
-        const emptyImage = document.getElementById('emptyFrameImage');
-        const captionEl = document.getElementById('emptyCaption');
+        // Hide heart popup
+        heartPopup.classList.remove('visible');
         
-        // Celebration mode
-        emptyImage.innerHTML = `
-            <p style="font-size: 4rem; margin-bottom: 0.5rem; animation: pop 0.6s ease;">❤️</p>
-            <p style="font-family: 'DM Serif Display', serif; font-size: 2rem; color: #E9748D; margin-bottom: 0.5rem; text-align: center; animation: fadeIn 0.8s ease;">
-                Thank you.
-            </p>
-            <p style="font-family: 'Inter', sans-serif; font-size: 1.1rem; font-style: italic; color: #6B4E71; text-align: center; animation: fadeIn 1s ease;">
-                The next adventure begins now.
-            </p>
-        `;
+        // Show celebration message
+        celebrationMessage.classList.add('visible');
         
-        captionEl.innerHTML = '<p style="text-align: center; color: #E9748D; font-weight: 600; font-size: 1rem;">♡ forever yours ♡</p>';
-        
-        // Confetti effect (simple)
-        for (let i = 0; i < 30; i++) {
+        // Confetti effect
+        for (let i = 0; i < 50; i++) {
             setTimeout(() => {
                 const confetti = document.createElement('div');
                 confetti.style.position = 'fixed';
                 confetti.style.left = Math.random() * 100 + '%';
                 confetti.style.top = Math.random() * 100 + '%';
-                confetti.style.width = '10px';
-                confetti.style.height = '10px';
+                confetti.style.width = '12px';
+                confetti.style.height = '12px';
                 confetti.style.backgroundColor = ['#E9748D', '#FFD966', '#FFB3B3', '#D6B5FF'][Math.floor(Math.random() * 4)];
                 confetti.style.borderRadius = '50%';
                 confetti.style.pointerEvents = 'none';
                 confetti.style.zIndex = '1000';
                 confetti.style.animation = 'pop 0.8s ease forwards';
                 document.body.appendChild(confetti);
-                
                 setTimeout(() => confetti.remove(), 1000);
-            }, i * 50);
+            }, i * 30);
         }
-        
-        console.log('💖 SHE SAID YES! 💖');
     }
     
-    // ---------- RECORD PLAYER - LOVER GIRL ----------
+    // ---------- RECORD PLAYER ----------
     function handleRecordClick() {
         if (!audio) return;
         
@@ -284,34 +216,18 @@ document.addEventListener('DOMContentLoaded', function() {
         recordPlayer.addEventListener('click', handleRecordClick);
     }
     
-    // ---------- INITIAL SETUP ----------
-    console.log('🌟 Journey path ready. 15 memories waiting.');
-    console.log('🔒 Empty frame locked. Visit all 15 chapters to unlock.');
-    console.log('🎶 Click the record to play our song.');
-    
-    // Add animation styles if not present
-    if (!document.getElementById('journeyAnimations')) {
-        const style = document.createElement('style');
-        style.id = 'journeyAnimations';
-        style.textContent = `
-            @keyframes fadeInUp {
-                from { opacity: 0; transform: translateY(15px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            @keyframes pop {
-                0% { transform: scale(0); opacity: 0; }
-                50% { transform: scale(1.3); }
-                100% { transform: scale(1); opacity: 1; }
-            }
-            @keyframes fadeIn {
-                from { opacity: 0; }
-                to { opacity: 1; }
-            }
-        `;
-        document.head.appendChild(style);
+    if (yesButton) {
+        yesButton.addEventListener('click', handleYesClick);
     }
     
-    // Auto-scroll to first chapter on load
+    // ---------- INITIAL SETUP ----------
+    console.log('🌟🌟🌟 JOURNEY PATH READY 🌟🌟🌟');
+    console.log('📸 15 memories - click each one');
+    console.log('🔒 Empty frame locked until all 15 are visited');
+    console.log('🎶 Click the record for Lover Girl');
+    console.log('❤️ When unlocked, click empty frame for proposal');
+    
+    // Auto-scroll to first chapter
     setTimeout(() => {
         const firstChapter = document.querySelector('.chapter');
         if (firstChapter) {

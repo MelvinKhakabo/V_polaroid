@@ -10,7 +10,7 @@
 <body>
     <div class="journey-container">
         
-        <!-- DECORATIVE MAP BACKGROUND (subtle, stays in place) -->
+        <!-- DECORATIVE MAP BACKGROUND -->
         <div class="map-background"></div>
         
         <!-- MAIN SCROLLABLE JOURNEY -->
@@ -230,27 +230,55 @@
                 <div class="chapter-label">15</div>
             </div>
             
-            <!-- FINAL DESTINATION: THE EMPTY FRAME -->
+            <!-- =========================================== -->
+            <!-- FINAL DESTINATION: BLANK FRAME + PROPOSAL   -->
+            <!-- =========================================== -->
             <div class="chapter empty-frame-chapter" data-id="empty" data-unlocked="false">
                 <div class="path-connector final"></div>
                 <div class="pin-dot large empty-dot"></div>
+                
+                <!-- THE BLANK POLAROID - COMPLETELY EMPTY -->
                 <div class="polaroid empty-polaroid locked">
-                    <div class="empty-frame-image" id="emptyFrameImage">
-                        <div class="empty-message">
-                            <span class="question-mark">???</span>
-                        </div>
+                    <div class="empty-frame-image blank" id="emptyFrameImage">
+                        <!-- Intentionally blank - white space -->
                     </div>
                     <div class="polaroid-caption empty-caption" id="emptyCaption">
                         <h3>The next adventure</h3>
                         <p class="empty-caption-text">Waiting for you</p>
                     </div>
                 </div>
-                <div class="chapter-label">?</div>
+                
+                <!-- SPEECH BUBBLE - Appears when unlocked -->
+                <div class="speech-bubble" id="speechBubble">
+                    <p>I don't know where the next adventure goes.</p>
+                    <p>I only know I want you in the frame.</p>
+                    <div class="bubble-tail"></div>
+                </div>
+                
+                <!-- HEART POP-UP - Appears when frame is clicked -->
+                <div class="heart-popup" id="heartPopup">
+                    <div class="heart-shape">
+                        <h2>Will you be<br>my Valentine?</h2>
+                        <button class="yes-button" id="yesButton">❤️ Yes</button>
+                    </div>
+                </div>
+                
+                <!-- CELEBRATION MESSAGE - Appears after Yes -->
+                <div class="celebration-message" id="celebrationMessage">
+                    <div class="celebration-content">
+                        <p class="big-heart">❤️</p>
+                        <h2>Thank you.</h2>
+                        <p class="next-adventure">The next adventure begins now.</p>
+                        <p class="forever">♡ forever yours ♡</p>
+                    </div>
+                </div>
+                
             </div>
+            <!-- =========================================== -->
             
         </div> <!-- end journey-path -->
         
-        <!-- RECORD PLAYER - Lover Girl trigger -->
+        <!-- RECORD PLAYER -->
         <div class="record-player" id="recordPlayer">
             <div class="record">
                 <div class="record-label"></div>
@@ -258,13 +286,13 @@
             <div class="tonearm"></div>
         </div>
         
-        <!-- PROGRESS HEART (floating indicator) -->
+        <!-- PROGRESS HEART -->
         <div class="progress-heart" id="progressHeart">
             <span id="progressCount">0</span>/15
             <div class="heart-fill"></div>
         </div>
 
-        <!-- AUDIO ELEMENT -->
+        <!-- AUDIO -->
         <audio id="loverGirl" loop preload="auto">
             <source src="assets/audio/lover-girl.mp3" type="audio/mpeg">
         </audio>
