@@ -1,9 +1,40 @@
 /* =====================================
    OUR MAP · VALENTINE 2026
-   Lover Girl · 15 Memories · Empty Frame
-   Brighter, bolder, full of heart
+   Bright & Vibrant Edition
+   Colors that pop, hearts that glow
    ===================================== */
 
+/* ---------- VARIABLES ---------- */
+:root {
+    --coral-blush: #FFE5E5;
+    --soft-pink: #FFD6D6;
+    --warm-coral: #FFB3B3;
+    --vibrant-rose: #E9748D;
+    --deep-rose: #D14B6E;
+    --lavender-mist: #E2D1FF;
+    --soft-lavender: #D6B5FF;
+    --warm-cream: #FFF9F0;
+    --pure-white: #FFFFFF;
+    --warm-gray: #FFF1F1;
+    --soft-charcoal: #4A4A4A;
+    --golden-glow: #FFD966;
+    
+    --shadow-soft: 0 8px 24px rgba(233, 116, 141, 0.15);
+    --shadow-medium: 0 12px 32px rgba(209, 75, 110, 0.2);
+    --shadow-glow: 0 0 30px rgba(233, 116, 141, 0.25);
+    
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 16px;
+    
+    --font-serif: 'DM Serif Display', Georgia, serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    
+    --transition-bounce: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition-smooth: all 0.4s ease;
+}
+
+/* ---------- RESET / BASE ---------- */
 * {
     margin: 0;
     padding: 0;
@@ -11,92 +42,122 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: #FFF5F7;
-    overflow: hidden;
-    width: 100vw;
-    height: 100vh;
+    background-color: var(--coral-blush);
+    font-family: var(--font-sans);
+    color: var(--soft-charcoal);
+    overflow-x: hidden;
+    line-height: 1.6;
 }
 
 .map-container {
     position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+    width: 100vw;
+    min-height: 100vh;
+    overflow-x: auto;
+    overflow-y: auto;
+    background: linear-gradient(145deg, #FFE9E9 0%, #FFF1F5 100%);
 }
 
+/* ---------- VIBRANT MAP BACKGROUND ---------- */
 .map {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #FFE5E5 0%, #FFF0F5 50%, #FFE5F0 100%);
-    z-index: 1;
+    background: radial-gradient(circle at 20% 30%, #FFD9D9 20%, transparent 50%),
+                radial-gradient(circle at 80% 20%, #FFD1E0 25%, transparent 55%),
+                radial-gradient(circle at 40% 70%, #FFE0F0 30%, transparent 60%),
+                radial-gradient(circle at 70% 80%, #FFD1D1 25%, transparent 50%),
+                radial-gradient(circle at 10% 85%, #FFE5F0 30%, transparent 60%),
+                radial-gradient(circle at 90% 45%, #FFD9E5 35%, transparent 65%),
+                linear-gradient(45deg, rgba(255, 230, 230, 0.6) 0%, rgba(255, 240, 245, 0.8) 100%);
+    background-blend-mode: overlay;
+    z-index: 0;
 }
 
+/* Subtle decorative grid */
 .grid-lines {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-image: 
-        repeating-linear-gradient(0deg, rgba(233, 116, 141, 0.05) 0px, transparent 1px, transparent 50px, rgba(233, 116, 141, 0.05) 51px),
-        repeating-linear-gradient(90deg, rgba(233, 116, 141, 0.05) 0px, transparent 1px, transparent 50px, rgba(233, 116, 141, 0.05) 51px);
-    z-index: 2;
+        repeating-linear-gradient(0deg, rgba(233, 116, 141, 0.08) 0px, rgba(233, 116, 141, 0.08) 1px, transparent 1px, transparent 50px),
+        repeating-linear-gradient(90deg, rgba(233, 116, 141, 0.08) 0px, rgba(233, 116, 141, 0.08) 1px, transparent 1px, transparent 50px);
+    z-index: 1;
+    pointer-events: none;
 }
 
+/* ---------- PINS LAYER ---------- */
 .pins-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100%;
-    height: 100%;
-    z-index: 3;
+    min-height: 100vh;
+    z-index: 10;
+    pointer-events: none;
 }
 
-/* PIN STYLES */
 .pin {
     position: absolute;
+    pointer-events: auto;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    z-index: 20;
+    transition: var(--transition-bounce);
 }
 
+/* ---------- PIN DOTS ---------- */
 .pin-dot {
-    width: 16px;
-    height: 16px;
-    background-color: #B76E79;
-    border: 2px solid white;
+    width: 20px;
+    height: 20px;
+    background-color: var(--vibrant-rose);
+    border: 3px solid var(--pure-white);
     border-radius: 50%;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
+    box-shadow: 0 0 0 2px rgba(233, 116, 141, 0.2), var(--shadow-soft);
+    transition: var(--transition-bounce);
+    position: relative;
+    z-index: 25;
 }
 
-.pin:hover .pin-dot {
-    transform: scale(1.2);
-    box-shadow: 0 4px 12px rgba(233, 116, 141, 0.4);
+.pin-dot:hover {
+    transform: scale(1.4);
+    background-color: var(--deep-rose);
+    box-shadow: 0 0 0 4px rgba(233, 116, 141, 0.3), var(--shadow-medium);
 }
 
-/* POLAROID STYLES */
+/* Visited pin state */
+.pin.visited .pin-dot {
+    background-color: var(--deep-rose);
+    border-color: var(--pure-white);
+    box-shadow: 0 0 0 4px rgba(209, 75, 110, 0.25);
+    opacity: 0.95;
+}
+
+/* ---------- POLAROID STYLES ---------- */
 .polaroid {
     position: absolute;
     bottom: 30px;
     left: 50%;
-    transform: translateX(-50%);
-    width: 220px;
-    background: white;
-    padding: 12px 12px 40px 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: translateX(-50%) rotate(-1deg);
+    width: 240px;
+    background-color: var(--pure-white);
+    padding: 18px 18px 24px;
+    box-shadow: var(--shadow-soft);
     border-radius: 4px;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: var(--transition-bounce);
     z-index: 100;
+    pointer-events: none;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.pin:hover .polaroid.hidden {
+    display: block;
+    animation: polaroidFloat 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 .polaroid.hidden {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateX(-50%) scale(0.9);
+    display: none;
 }
 
 .polaroid-image {
@@ -104,191 +165,397 @@ body {
     height: 180px;
     background-size: cover;
     background-position: center;
-    border-radius: 2px;
-    margin-bottom: 12px;
-}
-
-.polaroid-caption {
-    padding: 0 8px;
+    background-color: var(--soft-pink);
+    margin-bottom: 14px;
+    border-radius: 3px;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .polaroid-caption h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 0.9rem;
-    color: #4A4A4A;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--soft-charcoal);
     margin-bottom: 6px;
-    line-height: 1.3;
+    line-height: 1.4;
+    letter-spacing: 0.5px;
 }
 
 .polaroid-caption p {
-    font-size: 0.75rem;
-    color: #6B6B6B;
-    line-height: 1.4;
+    font-size: 0.8rem;
+    color: #6B4E71;
     font-style: italic;
+    line-height: 1.5;
+    opacity: 0.9;
 }
 
-.polaroid-shadow {
-    position: absolute;
-    bottom: -8px;
-    left: 0;
-    right: 0;
-    height: 8px;
-    background: rgba(0, 0, 0, 0.1);
-    filter: blur(8px);
-    z-index: -1;
+@keyframes polaroidFloat {
+    0% {
+        transform: translateX(-50%) rotate(-1deg) translateY(0);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(-50%) rotate(2deg) translateY(-12px);
+        opacity: 1;
+    }
 }
 
-/* EMPTY FRAME STYLES */
+/* ---------- VIDEO SUPPORT ---------- */
+.polaroid-image video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 3px;
+    display: block;
+}
+
+/* ---------- EMPTY FRAME (LOCKED) ---------- */
 .empty-polaroid {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 220px;
-    background: white;
-    padding: 12px 12px 40px 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
-    z-index: 100;
+    background-color: rgba(255, 245, 245, 0.9);
+    border: 2px dashed var(--vibrant-rose);
+    backdrop-filter: blur(2px);
 }
 
-.empty-polaroid.locked {
-    opacity: 0.6;
-}
-
-.empty-frame {
+.empty-frame-image {
     width: 100%;
     height: 180px;
-    background-color: #F5F5F5;
-    border: 2px dashed #D0D0D0;
-    border-radius: 2px;
+    background-color: rgba(255, 230, 230, 0.7);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
+    border-radius: 3px;
+    transition: var(--transition-smooth);
 }
 
-.empty-frame-content {
+.empty-message {
+    font-size: 2.8rem;
+    color: var(--vibrant-rose);
+    opacity: 0.5;
+    font-family: var(--font-serif);
+}
+
+.question-mark {
+    font-size: 3.2rem;
+    text-shadow: 0 0 10px rgba(233, 116, 141, 0.3);
+}
+
+.empty-caption .empty-caption-text {
     text-align: center;
-    color: #999;
+    font-style: normal;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    color: var(--vibrant-rose);
+    opacity: 0.7;
+    text-transform: uppercase;
 }
 
-.empty-frame-content p {
-    font-size: 2rem;
-    margin-bottom: 8px;
+/* ---------- EMPTY FRAME (UNLOCKED) ---------- */
+.empty-frame-pin[data-unlocked="true"] .empty-polaroid {
+    border: 2px solid var(--vibrant-rose);
+    background-color: rgba(255, 245, 245, 0.95);
+    box-shadow: var(--shadow-glow);
+    animation: pulseGlow 2s infinite ease-in-out;
+    cursor: pointer;
 }
 
-.empty-frame-content span {
-    font-size: 0.75rem;
-    font-style: italic;
+.empty-frame-pin[data-unlocked="true"] .empty-message {
+    opacity: 1;
+    color: var(--deep-rose);
+    animation: subtleBob 3s infinite ease-in-out;
 }
 
-.empty-caption {
-    padding: 0 8px;
-    text-align: center;
+.empty-frame-pin[data-unlocked="true"] .empty-caption-text {
+    opacity: 1;
+    color: var(--deep-rose);
+    font-weight: 600;
 }
 
-.empty-caption-text {
-    font-size: 0.75rem;
-    color: #999;
-    font-style: italic;
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 15px rgba(233, 116, 141, 0.3); }
+    50% { box-shadow: 0 0 35px rgba(233, 116, 141, 0.5); }
+    100% { box-shadow: 0 0 15px rgba(233, 116, 141, 0.3); }
 }
 
-/* RECORD PLAYER */
+@keyframes subtleBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+/* ---------- RECORD PLAYER ---------- */
 .record-player {
     position: fixed;
     bottom: 30px;
     right: 30px;
     width: 80px;
     height: 80px;
-    background: linear-gradient(135deg, #E9748D 0%, #D14B6E 100%);
+    background: linear-gradient(145deg, #FFB3B3, #FF9E9E);
     border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 8px 24px rgba(233, 116, 141, 0.4);
+    box-shadow: 0 10px 25px rgba(233, 116, 141, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    z-index: 1000;
+    z-index: 200;
+    cursor: pointer;
+    transition: var(--transition-bounce);
+    border: 3px solid white;
 }
 
 .record-player:hover {
     transform: scale(1.1);
-    box-shadow: 0 12px 32px rgba(233, 116, 141, 0.5);
+    box-shadow: 0 15px 35px rgba(233, 116, 141, 0.4);
 }
 
-.record-player.playing {
-    animation: spin 3s linear infinite;
+.record {
+    width: 68px;
+    height: 68px;
+    background: radial-gradient(circle at 30% 30%, #2C2C2C, #121212);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: spin 4s linear infinite;
+    animation-play-state: paused;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.record-label {
+    width: 24px;
+    height: 24px;
+    background: radial-gradient(circle, var(--golden-glow), #FFB347);
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.5);
+}
+
+.tonearm {
+    position: absolute;
+    top: 5px;
+    left: 55px;
+    width: 35px;
+    height: 10px;
+    background: linear-gradient(to right, #6B4E71, #4A4A4A);
+    transform-origin: left center;
+    transform: rotate(-15deg);
+    border-radius: 20px;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.record-player.playing .record {
+    animation-play-state: running;
+}
+
+.record-player.playing .tonearm {
+    transform: rotate(-5deg);
 }
 
 @keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
-.record-icon {
-    width: 50px;
-    height: 50px;
-    background-color: #4A4A4A;
-    border-radius: 50%;
+/* ---------- HEART RESPONSE BUTTON ---------- */
+.heart-response {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 32px;
+    background: linear-gradient(145deg, var(--vibrant-rose), var(--deep-rose));
+    border: none;
+    border-radius: 60px;
+    cursor: pointer;
+    transition: var(--transition-bounce);
+    box-shadow: 0 8px 20px rgba(233, 116, 141, 0.4);
+    margin-top: 8px;
+}
+
+.heart-response:hover {
+    background: linear-gradient(145deg, var(--deep-rose), #B23B5E);
+    transform: scale(1.12);
+    box-shadow: 0 12px 30px rgba(209, 75, 110, 0.5);
+}
+
+.heart-icon {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    transform: rotate(45deg);
     position: relative;
 }
 
-.record-icon::before {
+.heart-icon::before,
+.heart-icon::after {
     content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
     background-color: white;
     border-radius: 50%;
+    position: absolute;
 }
 
-/* RESPONSIVE DESIGN */
+.heart-icon::before {
+    left: -10px;
+    top: 0;
+}
+
+.heart-icon::after {
+    top: -10px;
+    left: 0;
+}
+
+.heart-text {
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 1.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------- SHAKE ANIMATION (LOCKED FRAME) ---------- */
+.shake {
+    animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+}
+
+/* ---------- PROPOSAL ANIMATIONS ---------- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pop {
+    0% { transform: scale(0.6); opacity: 0; }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ---------- RESPONSIVE DESIGN ---------- */
 @media (max-width: 768px) {
-    .polaroid,
-    .empty-polaroid {
-        width: 180px;
+    .polaroid {
+        width: 200px;
+        padding: 14px 14px 20px;
     }
     
-    .polaroid-image,
-    .empty-frame {
+    .polaroid-image {
         height: 150px;
     }
     
-    .polaroid-caption h3 {
-        font-size: 0.8rem;
+    .empty-frame-image {
+        height: 150px;
     }
     
-    .polaroid-caption p {
-        font-size: 0.7rem;
+    .pin-dot {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .record-player {
+        width: 70px;
+        height: 70px;
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .record {
+        width: 58px;
+        height: 58px;
+    }
+}
+
+@media (max-width: 480px) {
+    .polaroid {
+        width: 170px;
+        padding: 12px 12px 18px;
+    }
+    
+    .polaroid-image {
+        height: 130px;
+    }
+    
+    .empty-frame-image {
+        height: 130px;
+    }
+    
+    .pin-dot {
+        width: 16px;
+        height: 16px;
+        border-width: 2px;
     }
     
     .record-player {
         width: 60px;
         height: 60px;
-        bottom: 20px;
-        right: 20px;
+        bottom: 16px;
+        right: 16px;
     }
     
-    .record-icon {
-        width: 40px;
-        height: 40px;
+    .record {
+        width: 50px;
+        height: 50px;
     }
     
-    .record-icon::before {
-        width: 12px;
-        height: 12px;
+    .record-label {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .tonearm {
+        width: 28px;
+        left: 45px;
+    }
+    
+    .polaroid-caption h3 {
+        font-size: 0.9rem;
+    }
+    
+    .polaroid-caption p {
+        font-size: 0.75rem;
+    }
+    
+    .heart-response {
+        padding: 10px 24px;
+    }
+    
+    .heart-text {
+        font-size: 1rem;
     }
 }
 
-/* UTILITY CLASSES */
-.hidden {
-    display: none;
+/* ---------- SCROLLBAR STYLING (optional, keeps it pretty) ---------- */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--coral-blush);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--vibrant-rose);
+    border-radius: 20px;
+    border: 2px solid var(--coral-blush);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--deep-rose);
 }
