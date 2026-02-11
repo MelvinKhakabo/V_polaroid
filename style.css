@@ -1,0 +1,488 @@
+/* ============
+   VARIABLES
+   ============ */
+:root {
+    --cream: #FDF8F2;
+    --sage: #D4E2D4;
+    --clay: #C5A89F;
+    --terracotta: #C97C5D;
+    --deep-olive: #5A4C3A;
+    --warm-white: #F5EFE6;
+    --dusty-rose: #D69F9F;
+    --charcoal: #2C2C2C;
+    --sand: #EFE3D9;
+    
+    --shadow-sm: 0 4px 12px rgba(90, 76, 58, 0.08);
+    --shadow-md: 0 8px 24px rgba(90, 76, 58, 0.12);
+    --shadow-lg: 0 16px 32px rgba(90, 76, 58, 0.16);
+    
+    --border-radius: 4px;
+    --font-serif: 'DM Serif Display', Georgia, serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    
+    --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ============
+   RESET / BASE
+   ============ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--cream);
+    font-family: var(--font-sans);
+    color: var(--charcoal);
+    overflow-x: hidden;
+    line-height: 1.5;
+}
+
+.map-container {
+    position: relative;
+    width: 100vw;
+    min-height: 100vh;
+    overflow-x: auto;
+    overflow-y: auto;
+    background-color: var(--cream);
+}
+
+/* ============
+   MAP BACKGROUND
+   ============ */
+.map {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--cream);
+    background-image: 
+        /* Land masses - organic blobs */
+        radial-gradient(circle at 20% 30%, var(--sage) 25%, transparent 40%),
+        radial-gradient(circle at 70% 20%, var(--sage) 30%, transparent 45%),
+        radial-gradient(circle at 45% 60%, var(--sage) 35%, transparent 50%),
+        radial-gradient(circle at 80% 70%, var(--sage) 25%, transparent 40%),
+        radial-gradient(circle at 15% 75%, var(--sage) 20%, transparent 35%),
+        radial-gradient(circle at 60% 85%, var(--sage) 30%, transparent 45%),
+        /* Oceans / negative space */
+        radial-gradient(circle at 90% 40%, var(--clay) 15%, transparent 35%),
+        radial-gradient(circle at 10% 50%, var(--clay) 10%, transparent 30%);
+    background-blend-mode: overlay;
+    opacity: 0.9;
+    z-index: 0;
+}
+
+.grid-lines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        repeating-linear-gradient(0deg, rgba(90, 76, 58, 0.03) 0px, rgba(90, 76, 58, 0.03) 1px, transparent 1px, transparent 40px),
+        repeating-linear-gradient(90deg, rgba(90, 76, 58, 0.03) 0px, rgba(90, 76, 58, 0.03) 1px, transparent 1px, transparent 40px);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* ============
+   PINS LAYER
+   ============ */
+.pins-layer {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.pin {
+    position: absolute;
+    pointer-events: auto;
+    cursor: pointer;
+    z-index: 20;
+    transition: var(--transition);
+}
+
+.pin-dot {
+    width: 16px;
+    height: 16px;
+    background-color: var(--terracotta);
+    border: 2px solid var(--warm-white);
+    border-radius: 50%;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    position: relative;
+    z-index: 25;
+}
+
+.pin-dot:hover {
+    transform: scale(1.3);
+    background-color: var(--dusty-rose);
+    box-shadow: var(--shadow-md);
+}
+
+/* Visited pin state */
+.pin.visited .pin-dot {
+    background-color: var(--deep-olive);
+    border-color: var(--sand);
+    opacity: 0.8;
+}
+
+/* ============
+   POLAROID STYLES
+   ============ */
+.polaroid {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    width: 200px;
+    background-color: var(--warm-white);
+    padding: 16px 16px 20px;
+    box-shadow: var(--shadow-lg);
+    border-radius: 2px;
+    transition: var(--transition);
+    z-index: 100;
+    pointer-events: none;
+}
+
+.pin:hover .polaroid.hidden {
+    display: block;
+    animation: polaroidLift 0.4s ease forwards;
+}
+
+.polaroid.hidden {
+    display: none;
+}
+
+.polaroid-image {
+    width: 100%;
+    height: 160px;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--sand);
+    margin-bottom: 12px;
+    border-radius: 1px;
+}
+
+.polaroid-caption h3 {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+    line-height: 1.3;
+    letter-spacing: 0.3px;
+}
+
+.polaroid-caption p {
+    font-size: 0.75rem;
+    color: var(--deep-olive);
+    font-style: italic;
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
+@keyframes polaroidLift {
+    0% {
+        transform: translateX(-50%) rotate(-2deg) translateY(0);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(-50%) rotate(0deg) translateY(-8px);
+        opacity: 1;
+    }
+}
+
+/* ============
+   EMPTY FRAME
+   ============ */
+.empty-polaroid {
+    background-color: rgba(245, 239, 230, 0.7);
+    border: 2px dashed var(--deep-olive);
+    border-style: dashed;
+    backdrop-filter: blur(2px);
+}
+
+.empty-frame-image {
+    width: 100%;
+    height: 160px;
+    background-color: rgba(201, 124, 93, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    border-radius: 1px;
+}
+
+.empty-message {
+    font-size: 2.5rem;
+    color: var(--deep-olive);
+    opacity: 0.4;
+    font-family: var(--font-serif);
+}
+
+.question-mark {
+    font-size: 2.8rem;
+}
+
+.empty-caption .empty-caption-text {
+    text-align: center;
+    font-style: normal;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: var(--deep-olive);
+    opacity: 0.6;
+}
+
+/* Unlocked state - pulses gently */
+.empty-frame-pin[data-unlocked="true"] .empty-polaroid {
+    border: 2px solid var(--terracotta);
+    background-color: rgba(201, 124, 93, 0.08);
+    animation: softPulse 2s infinite ease-in-out;
+    cursor: pointer;
+}
+
+.empty-frame-pin[data-unlocked="true"] .empty-message {
+    opacity: 0.8;
+    color: var(--terracotta);
+}
+
+.empty-frame-pin[data-unlocked="true"] .empty-caption-text {
+    opacity: 1;
+    color: var(--terracotta);
+}
+
+@keyframes softPulse {
+    0% { box-shadow: 0 0 0 0 rgba(201, 124, 93, 0.2); }
+    50% { box-shadow: 0 0 0 10px rgba(201, 124, 93, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(201, 124, 93, 0); }
+}
+
+/* ============
+   RECORD PLAYER
+   ============ */
+.record-player {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 70px;
+    height: 70px;
+    background-color: var(--deep-olive);
+    border-radius: 50%;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.record {
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle at 30% 30%, #333, #111);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: spin 4s linear infinite;
+    animation-play-state: paused;
+}
+
+.record-label {
+    width: 20px;
+    height: 20px;
+    background-color: var(--dusty-rose);
+    border-radius: 50%;
+    border: 2px solid var(--warm-white);
+}
+
+.tonearm {
+    position: absolute;
+    top: 5px;
+    left: 45px;
+    width: 30px;
+    height: 8px;
+    background-color: var(--charcoal);
+    transform-origin: left center;
+    transform: rotate(-15deg);
+    border-radius: 4px;
+    transition: transform 0.3s ease;
+}
+
+.record-player.playing .record {
+    animation-play-state: running;
+}
+
+.record-player.playing .tonearm {
+    transform: rotate(-5deg);
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ============
+   PROPOSAL OVERLAY
+   ============ */
+.proposal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(253, 248, 242, 0.92);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 1s ease;
+    pointer-events: none;
+}
+
+.proposal-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.proposal-card {
+    background-color: var(--warm-white);
+    padding: 48px 40px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: var(--shadow-lg);
+    border-radius: 2px;
+    text-align: center;
+    transform: translateY(20px);
+    transition: transform 0.6s ease;
+}
+
+.proposal-overlay.visible .proposal-card {
+    transform: translateY(0);
+}
+
+.proposal-content p {
+    font-size: 1.1rem;
+    margin-bottom: 1.2rem;
+    color: var(--charcoal);
+    font-family: var(--font-serif);
+    line-height: 1.6;
+}
+
+.proposal-question {
+    font-size: 1.8rem;
+    font-family: var(--font-serif);
+    color: var(--terracotta);
+    margin: 32px 0 24px;
+    letter-spacing: 2px;
+}
+
+.heart-response {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 32px;
+    background-color: var(--dusty-rose);
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.heart-response:hover {
+    background-color: var(--terracotta);
+    transform: scale(1.05);
+}
+
+.heart-icon {
+    width: 20px;
+    height: 20px;
+    background-color: var(--warm-white);
+    transform: rotate(45deg);
+    position: relative;
+}
+
+.heart-icon::before,
+.heart-icon::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background-color: var(--warm-white);
+    border-radius: 50%;
+    position: absolute;
+}
+
+.heart-icon::before {
+    left: -10px;
+    top: 0;
+}
+
+.heart-icon::after {
+    top: -10px;
+    left: 0;
+}
+
+.heart-text {
+    color: var(--warm-white);
+    font-weight: 600;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
+/* ============
+   RESPONSIVE
+   ============ */
+@media (max-width: 768px) {
+    .polaroid {
+        width: 160px;
+    }
+    
+    .polaroid-image {
+        height: 130px;
+    }
+    
+    .proposal-card {
+        padding: 32px 24px;
+    }
+    
+    .proposal-question {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .pin-dot {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .polaroid {
+        width: 140px;
+        padding: 12px 12px 16px;
+    }
+    
+    .polaroid-image {
+        height: 110px;
+    }
+    
+    .record-player {
+        width: 60px;
+        height: 60px;
+        bottom: 16px;
+        right: 16px;
+    }
+    
+    .record {
+        width: 52px;
+        height: 52px;
+    }
+}
